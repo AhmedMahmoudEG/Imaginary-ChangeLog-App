@@ -61,7 +61,7 @@ More models will be added and improved as the project evolves.
 ## 🔄 Daily Commit Log
 
 This repository will be updated daily with progress and code improvements.  
-📅 *Started: [Your Start Date]*  
+📅 *Started: 22 JUNE 2025
 📌 *Today’s Work:* Created project, initialized Prisma, and added first 4 models.
 
 ---
