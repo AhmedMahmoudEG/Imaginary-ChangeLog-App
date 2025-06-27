@@ -61,9 +61,14 @@ More models will be added and improved as the project evolves.
 ## 🔄 Daily Commit Log
 
 This repository will be updated daily with progress and code improvements.  
-📅 *Started: 22 JUNE 2025
-📌 *Today’s Work:* Created project, initialized Prisma, and added first 4 models.
+📅 *Started: 27 JUNE 2025
+## Features Added (Today)
 
+- 🔐 JWT-based authentication (signup/signin)
+- 🗃️ Prisma models for User, Product, Update, and UpdatePoint
+- 🧠 Middleware to protect routes using tokens
+- 🧪 Tested user creation flow via Postman
+- ✅ Input type safety using TypeScript
 ---
 
 ## 📎 Getting Started
