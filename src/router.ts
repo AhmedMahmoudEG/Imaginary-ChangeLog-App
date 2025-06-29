@@ -1,4 +1,6 @@
-import { Router } from "express";
+import { Router,Request,Response,NextFunction } from "express";
+import { body,check,oneOf,validationResult } from "express-validator";
+import { handleInputErrors } from "./modules/middleware";
 const router = Router();
 
 /**
@@ -10,16 +12,51 @@ router.get('/product',(req,res)=>{
     })
 })
 router.get('/product/:id',()=>{})
-router.put('/product/:id',()=>{})
-router.post('/product/',()=>{})
+//req.body which is an object should have a field on it called name
+router.put('/product/:id',body('name').isString(),handleInputErrors,(req:Request,res:Response)=>{
+   
+})
+router.post('/product/',
+    [
+        body('name')
+        .notEmpty()
+        .withMessage('name is required'),
+    ]
+
+,handleInputErrors,(req:Request,res:Response)=>{
+
+})
 router.delete('/product/:id',()=>{})
 /**
  * Update
  */
 router.get('/update',()=>{})
 router.get('/update/:id',()=>{})
-router.put('/update/:id',()=>{})
-router.post('/update',()=>{})
+router.put('/update/:id',
+    [   body('title').optional(),
+        body('body').optional(),
+        oneOf([
+        check('status').equals('IN_PROGRESS'), 
+        check('status').equals('SHIPPED'), 
+        check('status').equals('DEPRECATED')
+        ]),
+        body('version').optional().isString(),
+        
+    ],
+    handleInputErrors
+    ,(req:Request,res:Response)=>{
+
+
+})
+router.post('/update',
+    [   body('title').exists().isString(),
+        body('body').exists().isString(),
+       body('productID').exists().isString()
+    ]
+    ,handleInputErrors
+    ,(req:Request,res:Response)=>{
+
+})
 router.delete('/update/:id',()=>{})
 
 /**
@@ -27,9 +64,33 @@ router.delete('/update/:id',()=>{})
  */
 router.get('/updatepoint',()=>{})
 router.get('/updatepoint/:id',()=>{})
-router.put('/updatepoint/:id',()=>{})
-router.post('/updatepoint',()=>{})
-router.delete('/updatepoint/:id',()=>{})
+router.put('/updatepoint/:id',
+    [   
+        body('name').optional().isString(),
+        body('description').optional().isString(), 
+    ]
+    ,(req:Request,res:Response)=>{
+    const errors = validationResult(req)
+      console.log(errors)
+    if(!errors.isEmpty()){
+        res.status(400).json({
+            errors:errors.array()
+        })
+    }
+})
+router.post('/updatepoint',
+    [
+        body('name').exists().isString(),
+        body('description').exists().isString(),
+        body('updateID').exists().isString()   
+    ],
+    handleInputErrors
+    ,(req:Request,res:Response)=>{
+
+})
+router.delete('/updatepoint/:id',handleInputErrors,(req:Request,res:Response)=>{
+
+})
 
 //importing The application router 
 

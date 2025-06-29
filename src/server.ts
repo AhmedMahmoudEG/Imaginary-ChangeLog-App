@@ -18,11 +18,6 @@ const customLogger = (message: string) => (req: any,res: any,next: () => void)=>
 
 }
 app.use(customLogger("customer"));
-app.get('/',(req,res)=>{
-    console.log('hello from express')
-    res.status(200);
-    res.json({message:"hello"})
-})
 //the protect only applys for the api path but will not be applied for user and signin cuz it doesnt make sense
 app.use('/api',protect,router)
 app.use('/user',createNewUser)
