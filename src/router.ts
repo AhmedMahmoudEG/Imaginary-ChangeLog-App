@@ -1,17 +1,14 @@
 import { Router,Request,Response,NextFunction } from "express";
 import { body,check,oneOf,validationResult } from "express-validator";
 import { handleInputErrors } from "./modules/middleware";
+import { createProduct, deleteProduct, getOneProduct, getProducts } from "./handlers/product";
 const router = Router();
 
 /**
  * Product
  */
-router.get('/product',(req,res)=>{
-    res.json({
-        message:"hello"
-    })
-})
-router.get('/product/:id',()=>{})
+router.get('/product',getProducts)
+router.get('/product/:id',getOneProduct)
 //req.body which is an object should have a field on it called name
 router.put('/product/:id',body('name').isString(),handleInputErrors,(req:Request,res:Response)=>{
    
@@ -23,10 +20,8 @@ router.post('/product/',
         .withMessage('name is required'),
     ]
 
-,handleInputErrors,(req:Request,res:Response)=>{
-
-})
-router.delete('/product/:id',()=>{})
+,handleInputErrors,createProduct)
+router.delete('/product/:id',deleteProduct)
 /**
  * Update
  */
