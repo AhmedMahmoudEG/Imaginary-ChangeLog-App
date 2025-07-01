@@ -2,6 +2,7 @@ import { body } from "express-validator";
 import prisma from "../db";
 import { Request,Response } from "express";
 import { UPDATE_STATUS } from "../generated/prisma";
+import { version } from "os";
 interface AuthenticatedUser {
   id: string;
   username: string;
@@ -60,7 +61,8 @@ export const createUpdate = async (req:AuthRequest<CreateUpdateBody>,res:Respons
         }
     })
     if(!product){
-        return res.json({message:"nope"})
+        res.json({message:"nope"})
+        return 
     }
     const update = await prisma.update.create({
         data: {
@@ -77,21 +79,36 @@ export const createUpdate = async (req:AuthRequest<CreateUpdateBody>,res:Respons
         },
         },
     });
-    res.status(200).json({data:update})
+   res.status(200).json({data:update})
 }
 export const updated = async (req:AuthRequest,res:Response) => {
-    const upID = req.params.id
+
+    const existing = await prisma.update.findFirst({
+        where: {
+            id: req.params.id,
+            product: {
+            belongsToId: req.user!.id,
+            },
+        },
+        });
+        if (!existing) {
+            res.status(404).json({ message: 'Update not found or not authorized' });
+        return 
+    }
+
     const updated = await prisma.update.update({
         where:{
-            id:upID,
-            productID:req.user!.id
+            id:req.params.id,
+           // productID:req.user!.id
         },
         data:{
             body:req.body.body,
             title:req.body.title,
-            status:req.body.status
+            status:req.body.status,
+            version:req.body.version!
         }
     })
+    res.json({data:updated})
 }
 export const deleteUpdate = async(req:AuthRequest,res:Response) =>{
     const upID = req.params.id;

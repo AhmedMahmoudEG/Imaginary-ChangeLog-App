@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import router from './router';
 import morgan from 'morgan'
 import cors from 'cors'
@@ -16,4 +16,9 @@ app.use(cors())
 app.use('/api',protect,router)
 app.use('/user',createNewUser)
 app.post('/signin',signin)
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err); // show full error in console
+  res.status(500).json({ message: "There was an error!" });
+});
 export default app;
