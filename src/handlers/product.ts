@@ -1,5 +1,5 @@
 import prisma from "../db"
-import { Request,Response } from "express"
+import { NextFunction, Request,Response } from "express"
 interface AuthenticatedUser {
   id: string;
   username: string;
@@ -34,14 +34,18 @@ export const getOneProduct = async (req:AuthRequest,res:Response)=>{
     })
     res.status(200).json({data:product})
 }
-export const createProduct = async(req:AuthRequest,res:Response)=>{
-        const product = await prisma.product.create({
-            data:{
-                name: req.body.name,
-                belongsToId : req.user!.id
-            }
-        })
-        res.status(201).json({ data: product });
+export const createProduct = async(req:AuthRequest,res:Response,next:NextFunction)=>{
+        try {
+            const product = await prisma.product.create({
+                data:{
+                    name: req.body.name,
+                    belongsToId : req.user!.id
+                }
+            })
+            res.status(201).json({ data: product });
+        } catch (error:any) {
+            next(error)
+        }
 }
 export const updateProduct = async(req:AuthRequest,res:Response)=>{
     const update = await prisma.product.update({

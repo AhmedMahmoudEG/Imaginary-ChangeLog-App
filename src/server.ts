@@ -16,8 +16,17 @@ app.use(cors())
 app.use('/api',protect,router)
 app.use('/user',createNewUser)
 app.post('/signin',signin)
-
+app.get('/',(req:Request,res:Response)=>{
+  res.json({message:"hello"})
+})
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  if(err.type ==='auth'){
+    res.status(401).json({message:"unauthorized"})
+  }else if (err.type = 'input'){
+    res.status(400).json({message:"invalid input"})
+  }else{
+    res.status(500).json({message:"oops that's on us"})
+  }
   console.error(err); // show full error in console
   res.status(500).json({ message: "There was an error!" });
 });
