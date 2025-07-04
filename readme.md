@@ -5,7 +5,7 @@ A full-stack-ready backend application built with Node.js, Express, and Prisma O
 
 ## 📌 Overview
 
-**Imaginary ChangeLog App** is a backend system for managing product changelogs. It allows developers and product teams to log, organize, and manage updates and features released over time.
+**ProdFlow** is a backend system for managing product changelogs. It allows developers and product teams to log, organize, and manage updates and features released over time.
 
 This project now includes route handling, environment-based configuration, authentication, and unit testing — making it suitable for production environments.
 
@@ -83,8 +83,8 @@ More models and relations can be extended as the project scales.
 ## 📎 Getting Started
 
 ```bash
-git clone https://github.com/your-username/imaginary-changelog-app
-cd imaginary-changelog-app
+git clone https://github.com/AhmedMahmoudEG/ProdFlow-App
+cd ProdFlow-App
 npm install
 npx prisma generate
 npx prisma db push  # or migrate deploy if using migrations
