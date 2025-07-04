@@ -55,11 +55,12 @@ export const createUpdate = async (req:AuthRequest<CreateUpdateBody>,res:Respons
         res.json({message:"nope"})
         return 
     }
+    type UpdateStatus = 'IN_PROGRESS' | 'SHIPPED' | 'DEPRECATED';
     const update = await prisma.update.create({
         data: {
         title,
         body,
-        status: req.body.status as Prisma.UPDATE_STATUS,
+        status: req.body.status as UpdateStatus,
         version,
         asset,
         updatedAt: req.body.updatedAt ?? new Date(),
