@@ -1,3 +1,14 @@
+openapi: 3.0.0
+info:
+  title: ProdFlow API
+  version: 1.0.0
+  description: API documentation for the ProdFlow backend
+
+servers:
+  - url: https://prodflow.onrender.com
+    description: Production server
+
+paths:
   /api/update:
     get:
       summary: Get all updates
@@ -162,10 +173,10 @@
       responses:
         '204':
           description: Update point deleted
-  components:
-    securitySchemes:
-      bearerAuth:
-        type: http
-        scheme: bearer
-        bearerFormat: JWT
-        
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
