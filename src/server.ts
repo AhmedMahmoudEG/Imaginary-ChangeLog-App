@@ -17,91 +17,26 @@ app.use('/api',protect,router)
 app.use('/user',createNewUser)
 app.post('/signin',signin)
 app.get('/',(req:Request,res:Response)=>{
-  res.json({
-    message: "📘 ProdFlow API Documentation",
-    auth: {
-      signup: {
-        method: "POST",
-        path: "/user",
-        body: {
-          username: "string",
-          password: "string"
-        }
-      },
-      signin: {
-        method: "POST",
-        path: "/signin",
-        body: {
-          username: "string",
-          password: "string"
-        }
-      }
-    },
-    protectedRoutes: {
-      note: "All routes under `/api` require JWT token in Authorization header: Bearer <token>",
-      products: {
-        getAll: { method: "GET", path: "/api/product" },
-        getOne: { method: "GET", path: "/api/product/:id" },
-        create: {
-          method: "POST",
-          path: "/api/product",
-          body: { name: "string" }
-        },
-        update: {
-          method: "PUT",
-          path: "/api/product/:id",
-          body: { name: "string" }
-        },
-        delete: { method: "DELETE", path: "/api/product/:id" }
-      },
-      updates: {
-        getAll: { method: "GET", path: "/api/update" },
-        getOne: { method: "GET", path: "/api/update/:id" },
-        create: {
-          method: "POST",
-          path: "/api/update",
-          body: {
-            title: "string",
-            body: "string",
-            productID: "string"
-          }
-        },
-        update: {
-          method: "PUT",
-          path: "/api/update/:id",
-          body: {
-            title: "string (optional)",
-            body: "string (optional)",
-            status: "IN_PROGRESS | SHIPPED | DEPRECATED",
-            version: "string (optional)"
-          }
-        },
-        delete: { method: "DELETE", path: "/api/update/:id" }
-      },
-      updatePoints: {
-        getAll: { method: "GET", path: "/api/updatepoint" },
-        getOne: { method: "GET", path: "/api/updatepoint/:id" },
-        create: {
-          method: "POST",
-          path: "/api/updatepoint",
-          body: {
-            name: "string",
-            description: "string",
-            updateID: "string"
-          }
-        },
-        update: {
-          method: "PUT",
-          path: "/api/updatepoint/:id",
-          body: {
-            name: "string (optional)",
-            description: "string (optional)"
-          }
-        },
-        delete: { method: "DELETE", path: "/api/updatepoint/:id" }
-      }
-    }
-  });
+  res.send(`
+    <h1>📘 ProdFlow API Documentation</h1>
+    <p>Welcome to the ProdFlow API. Here are some available routes:</p>
+
+    <h2>Auth</h2>
+    <ul>
+      <li><strong>POST</strong> /user – Sign up</li>
+      <li><strong>POST</strong> /signin – Sign in</li>
+    </ul>
+
+    <h2>Protected Routes (require JWT)</h2>
+    <ul>
+      <li><strong>GET</strong> /api/product – Get all products</li>
+      <li><strong>GET</strong> /api/product/:id – Get one product</li>
+      <li><strong>POST</strong> /api/product – Create product</li>
+      <li>... and so on</li>
+    </ul>
+
+    <p>Add the JWT token in the <code>Authorization</code> header as <code>Bearer &lt;token&gt;</code>.</p>
+  `);
 })
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if(err.type ==='auth'){
