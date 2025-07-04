@@ -1,6 +1,6 @@
 import prisma from "../db";
 import { NextFunction, Request,Response } from "express";
-import { UPDATE_STATUS } from "../generated/prisma";
+import { Prisma, PrismaClient } from '@prisma/client';
 import { AuthRequest } from "./interfaces/authRequest";
 import { CreateUpdateBody } from "./interfaces/updateBody";
 
@@ -59,7 +59,7 @@ export const createUpdate = async (req:AuthRequest<CreateUpdateBody>,res:Respons
         data: {
         title,
         body,
-        status: req.body.status as UPDATE_STATUS,
+        status: req.body.status as Prisma.UPDATE_STATUS,
         version,
         asset,
         updatedAt: req.body.updatedAt ?? new Date(),
