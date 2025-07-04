@@ -1,11 +1,8 @@
 import prisma from '../db'
 import { comparePassword, createJWT, hashPassword } from '../modules/auth'
 import { NextFunction, Request, Response } from 'express';
+import { UserInput } from './interfaces/user';
 
-interface UserInput{
-    username: string,
-    password: string
-}
 //create a function that allow me to create a user
 export const createNewUser = async(req:Request<{},{},{username: string,
     password: string}>,res:Response,next:NextFunction) =>{

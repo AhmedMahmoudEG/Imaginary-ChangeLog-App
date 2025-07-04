@@ -3,6 +3,7 @@ import { body,check,oneOf,validationResult } from "express-validator";
 import { handleInputErrors } from "./modules/middleware";
 import { createProduct, deleteProduct, getOneProduct, getProducts } from "./handlers/product";
 import { createUpdate, deleteUpdate, getOneUpdate, getUpdates, updated } from "./handlers/update";
+import { createUpdatePoint, deleteUPoint, getUpdatePoints, oneUpdatePoint, updateUpPoint } from "./handlers/updatePoint";
 const router = Router();
 
 /**
@@ -53,22 +54,15 @@ router.delete('/update/:id',deleteUpdate)
 /**
  * Update Points
  */
-router.get('/updatepoint',()=>{})
-router.get('/updatepoint/:id',()=>{})
+router.get('/updatepoint',getUpdatePoints)
+router.get('/updatepoint/:id',oneUpdatePoint)
 router.put('/updatepoint/:id',
     [   
         body('name').optional().isString(),
         body('description').optional().isString(), 
     ]
-    ,(req:Request,res:Response)=>{
-    const errors = validationResult(req)
-      console.log(errors)
-    if(!errors.isEmpty()){
-        res.status(400).json({
-            errors:errors.array()
-        })
-    }
-})
+    ,handleInputErrors,updateUpPoint
+)
 router.post('/updatepoint',
     [
         body('name').exists().isString(),
@@ -76,12 +70,8 @@ router.post('/updatepoint',
         body('updateID').exists().isString()   
     ],
     handleInputErrors
-    ,(req:Request,res:Response)=>{
-
-})
-router.delete('/updatepoint/:id',handleInputErrors,(req:Request,res:Response)=>{
-
-})
+    ,createUpdatePoint)
+router.delete('/updatepoint/:id',handleInputErrors,deleteUPoint)
 router.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if(err.type ==='auth'){
     res.status(401).json({message:"unauthorized"})

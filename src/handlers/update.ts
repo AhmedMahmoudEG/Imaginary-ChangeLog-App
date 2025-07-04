@@ -1,41 +1,32 @@
-import { body } from "express-validator";
 import prisma from "../db";
-import { Request,Response } from "express";
+import { NextFunction, Request,Response } from "express";
 import { UPDATE_STATUS } from "../generated/prisma";
-import { version } from "os";
-interface AuthenticatedUser {
-  id: string;
-  username: string;
-}
+import { AuthRequest } from "./interfaces/authRequest";
+import { CreateUpdateBody } from "./interfaces/updateBody";
 
-interface AuthRequest<T = any> extends Request {
-  user?: AuthenticatedUser;
-  body: T;
-}
-interface CreateUpdateBody {
-  productID: string;
-  title: string;
-  body: string;
-  status?: string;
-  version?: string;
-  asset?: string;
-  updatedAt?: string;
-}
+
+
+
 //how to get all updates for a user mean while update table doesn't know about the user 
 //there's common table between them "product" that has belongtoID , updates []
 //another solution by creating a new schema for user and updats 
 
-export const getUpdates = async (req:AuthRequest,res:Response)=>{
-    const updates = await prisma.update.findMany({
-        where:{
-            product:{
-                belongsToId:req.user!.id
-
-            }
-        },
-
-    })
-    res.status(200).json({data:updates})
+export const getUpdates = async (req:AuthRequest,res:Response,next:NextFunction)=>{
+    try {
+        const updates = await prisma.update.findMany({
+            where:{
+                product:{
+                    belongsToId:req.user!.id
+    
+                }
+            },
+    
+        })
+        res.status(200).json({data:updates})
+    } catch (error) {
+        error.type = 'input'
+        next(error);
+    }
 }
 export const getOneUpdate = async (req:AuthRequest,res:Response)=>{
     const prodID = req.params.id
